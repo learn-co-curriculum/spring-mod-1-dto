@@ -115,6 +115,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FootballService {
@@ -130,14 +131,12 @@ public class FootballService {
     }
 
     public FootballTeamDTO getFootballTeam(String teamName) {
-        for (FootballTeamDTO footballTeam : footballTeams) {
-            if (footballTeam.getTeamName().equals(teamName)) {
-                return footballTeam;
-            }
-        }
-
-        // If the team does not exist in the list, return null
-        return null;
+        Optional<FootballTeamDTO> footballTeamDTO = footballTeams.stream()
+                .filter(footballTeam -> footballTeam.getTeamName().equals(teamName))
+                .findAny();
+        
+        // If the team does not exist, throw a NoSuchElementException
+        return footballTeamDTO.orElseThrow();
     }
 }
 ```
