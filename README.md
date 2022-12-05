@@ -181,8 +181,12 @@ into a JSON object to return.
 Let's run the application and see what happens. We will first need to add a
 football team to the application.
 
-Open up Postman and under the "Headers" tab, add "Content-Type":"application/json"
-as shown in the screenshot below:
+Open up Postman and click the "Headers" tab. Make sure that the headers are not
+hidden. If they are, click on the "hidden" link to un-hide the headers.
+
+![headers-hidden](https://curriculum-content.s3.amazonaws.com/spring-mod-1/dto/headers-hidden.png)
+
+Then add "Content-Type":"application/json" as shown in the screenshot below:
 
 ![Content-Type-Headers](https://curriculum-content.s3.amazonaws.com/spring-mod-1/dto/api-headers-content-type.png)
 
