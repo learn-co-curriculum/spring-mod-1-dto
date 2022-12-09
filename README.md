@@ -3,6 +3,7 @@
 ## Learning Goals
 
 - Explain the significance of the DTO design pattern.
+- Mention how to hide a field in a JSON response.
 
 ## What is a Data Transfer Object?
 
@@ -240,8 +241,62 @@ the dynamic path variable, it will search the `List` in the `FootballService`
 class to see if a football team with that team name exists. Since it does, it will
 return the `FootballTeamDTO` in a serialized JSON format.
 
+## `@JsonIgnore` and `@JsonProperty`
+
+Consider the case where we might want to hide data in a JSON response. The most
+common case is when we have a `password` field. But for consistency, let's
+assume for a minute that we don't want to return the `currentSuperBowlChampion`
+field in the JSON response body.
+
+There are a few things we could do. We could either:
+
+- Remove the getter and setter methods for the field.
+- Add a Jackson annotation, `@JsonIgnore`.
+- Add a Jackson annotation, `@JsonProperty`.
+
+If we remove the getter and setter, then when we try to perform a GET request,
+it will not be able to perform a GET on the `currentSuperbowlChampion` field.
+Therefore, the response would look like this:
+
+![Get-Football-No-Superbowl](https://curriculum-content.s3.amazonaws.com/spring-mod-1/dto/json-without-superbowl-boolean.png)
+
+But by also removing the setter, we wouldn't be able to properly POST a football
+team since there is no method to set the `currentSuperbowlChampion`. If we still
+want to set the field, then we'd have to leave the setter in the code.
+
+A better way to go about this may be to use the `@JsonIgnore` and
+`@JsonProperty` annotations that are part of the
+`com.fasterxml.jackson.annotation` package.
+
+The `@JsonIgnore` annotation tells Jackson to completely ignore this field when
+it comes to serializing and deserializing the JSON. This is essentially the same
+as removing both the getter and setter of a private instance variable if this
+annotation is applied at the field level:
+
+```java
+        @JsonIgnore
+        private boolean currentSuperBowlChampion;
+```
+
+But in the case we mentioned above, maybe we want to be able to set this field,
+just not return this field when we perform a GET request. In that case, we can
+use the `@JsonProperty` annotation like this:
+
+```java
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        private boolean currentSuperBowlChampion;
+```
+
+What this annotation is doing is telling Jackson to only deserialize the field.
+Therefore, it can write out to the field, `currentSuperBowlChampion`, but it
+will not show up when a GET request is performed. This is essentially the same
+as removing the getter of a private instance variable if this annotation is
+applied at the field level.
+
+
 ## Resources
 
 - [Baeldung Java DTO Pattern](https://www.baeldung.com/java-dto-pattern)
 - [PostMapping Annotation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PostMapping.html)
 - [RequestBody Annotation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestBody.html)
+- [Using @JsonIgnore or @JsonProperty](https://medium.com/@bhanuchaddha/using-jsonignore-or-jsonproperty-to-hide-sensitive-data-in-json-response-ad12b1aacbf3)
