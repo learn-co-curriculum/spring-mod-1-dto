@@ -12,6 +12,14 @@ carry it between processes. This is a design pattern that reduces the amount of
 calls and processes back and forth to the server by batching up multiple parameters
 in a single call.
 
+As we may recall from the "What is Spring MVC?" lesson, Spring uses a
+`DispatcherServlet` to process user requests in HTTP. The `DispatcherServlet`
+helps orchestrate and communicate data from one server to a client (or another
+server). There are multiple processes that occur to transfer data to and from.
+Using DTOs to carry the data makes it easy to pass multiple attributes in one
+structure when these processes, or instances of an executing program, are being
+run.
+
 Consider the following class:
 
 ```java
