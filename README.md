@@ -213,6 +213,10 @@ We will add the following JSON to our application:
 }
 ```
 
+Note: The 0 value for `currentSuperBowlChampion` represents `false` where 1
+would represent `true`. This is a shorthand for true/false and is how Java
+stores `boolean` values.
+
 In Postman, navigate to the "Body" tab, choose the "raw" radio button, and then
 copy-paste the JSON in like so:
 
